@@ -11,7 +11,7 @@ phpfpm:
 # NGINX
 nginx:
   restart: always
-  image: nginx
+  image: nginx:stable-alpine
   ports:
     - "8000:80"
   links:
