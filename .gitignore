@@ -1,0 +1,4 @@
+log/
+mysql/
+.DS_Store
+!.gitkeep
