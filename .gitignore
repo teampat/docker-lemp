@@ -1,5 +1,4 @@
-www/*
+www/
 log/
 mysql/
 .DS_Store
-!.gitkeep
