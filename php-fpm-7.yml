@@ -4,6 +4,5 @@ phpfpm:
   volumes:
     - ./php-fpm-7/php-fpm.conf:/usr/local/etc/php-fpm.conf
     - ./php-fpm-7/php.ini:/usr/local/etc/php/php.ini
-    - ./php-fpm-7/opcache.ini:/usr/local/etc/php/conf.d/opcache.ini
-    - ./app:/var/www/html
+    - ./www:/var/www/html
     - ./log/php-fpm:/var/log/php-fpm
