@@ -1,0 +1,8 @@
+
+phpfpm:
+  build: php-fpm-7-alpine
+  volumes:
+    - ./php-fpm-7-alpine/php-fpm.conf:/usr/local/etc/php-fpm.conf
+    - ./php-fpm-7-alpine/php.ini:/usr/local/etc/php/php.ini
+    - ./www:/var/www/html
+    - ./log/php-fpm:/var/log/php-fpm
