@@ -1,12 +1,15 @@
 # PHP
 phpfpm:
   restart: always
-  extends:
-    file: php-fpm-7.yml
-    service: phpfpm
+  build: php-fpm-7
   links:
     - db:db
-
+  volumes:
+    - ./php-fpm-7/php-fpm.conf:/usr/local/etc/php-fpm.conf
+    - ./php-fpm-7/php.ini:/usr/local/etc/php/php.ini
+    - ./log/php-fpm:/var/log/php-fpm
+  volumes_from:
+    - www
 # NGINX
 nginx:
   restart: always
@@ -17,8 +20,9 @@ nginx:
     - phpfpm:phpfpm
   volumes:
     - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
-    - ./www:/var/www/html
     - ./log/nginx:/var/log/nginx
+  volumes_from:
+    - www
 # MYSQL
 db:
   restart: always
@@ -33,4 +37,10 @@ db:
   volumes:
     - ./mysql/databases:/var/lib/mysql
     - ./log/mysql:/var/log/mysql
-#  - /var/run/mysqld/mysqld.sock:/var/run/mysqld/mysqld.sock
+  # - /var/run/mysqld/mysqld.sock:/var/run/mysqld/mysqld.sock
+www:
+  image: busybox
+  stdin_open: true
+  volumes:
+    - ./www:/var/www/html
+
