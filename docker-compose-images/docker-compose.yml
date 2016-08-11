@@ -1,0 +1,46 @@
+# PHP
+phpfpm:
+  restart: always
+  image: teampat/php-fpm
+  links:
+    - db:db
+  volumes:
+    - ./php-fpm-7/php-fpm.conf:/usr/local/etc/php-fpm.conf
+    - ./php-fpm-7/php.ini:/usr/local/etc/php/php.ini
+    - ./log/php-fpm:/var/log/php-fpm
+  volumes_from:
+    - www
+# NGINX
+nginx:
+  restart: always
+  image: nginx:stable-alpine
+  ports:
+    - "8000:80"
+  links:
+    - phpfpm:phpfpm
+  volumes:
+    - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    - ./log/nginx:/var/log/nginx
+  volumes_from:
+    - www
+# MYSQL
+db:
+  restart: always
+  image: mysql
+  ports:
+    - "3306:3306"
+  environment:
+    MYSQL_ROOT_PASSWORD: 123456
+    MYSQL_USER: user
+    MYSQL_PASSWORD: password
+    MYSQL_DATABASE: database
+  volumes:
+    - ./mysql/databases:/var/lib/mysql
+    - ./log/mysql:/var/log/mysql
+  # - /var/run/mysqld/mysqld.sock:/var/run/mysqld/mysqld.sock
+www:
+  image: busybox
+  stdin_open: true
+  volumes:
+    - ./www:/var/www/html
+
