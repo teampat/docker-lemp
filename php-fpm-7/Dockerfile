@@ -1,18 +1,12 @@
-FROM php:7.0-fpm
+FROM php:7.0-fpm-alpine
 # Install modules
-RUN apt-get update && apt-get install -y libmcrypt-dev libicu-dev libpng12-dev libjpeg-dev libcurl4-gnutls-dev libxml2-dev libssl-dev \
-	&& rm -rf /var/lib/apt/lists/* \
-	&& docker-php-ext-install intl \
-	&& docker-php-ext-install mysqli \
-	&& docker-php-ext-install pdo \
-	&& docker-php-ext-install pdo_mysql \
-	&& docker-php-ext-install iconv \
-	&& docker-php-ext-install mcrypt \
-	&& docker-php-ext-install opcache \
-	&& docker-php-ext-install mbstring \
-	&& docker-php-ext-install gd \  
-	&& docker-php-ext-install curl \ 
-	&& docker-php-ext-install xml \ 
-	&& docker-php-ext-install json
+RUN apk upgrade --update && apk add \
+    autoconf file g++ gcc binutils isl libatomic libc-dev musl-dev make re2c libstdc++ libgcc libcurl binutils-libs mpc1 mpfr3 gmp libgomp coreutils freetype-dev libjpeg-turbo-dev libltdl libmcrypt-dev libpng-dev openssl-dev \
+    && docker-php-ext-install intl iconv mcrypt mysqli pdo pdo_mysql curl bcmath mbstring json opcache \
+    && docker-php-ext-configure gd --with-freetype-dir=/usr/include/ --with-jpeg-dir=/usr/include/ \
+    && docker-php-ext-install gd 
+
+RUN apk del autoconf file g++ gcc binutils isl libatomic libc-dev musl-dev make re2c libstdc++ libgcc libcurl binutils-libs mpc1 mpfr3 gmp libgomp coreutils freetype-dev libjpeg-turbo-dev libltdl libmcrypt-dev libpng-dev openssl-dev \
+&& rm -rf /var/cache/apk/*
 
 CMD ["php-fpm"]

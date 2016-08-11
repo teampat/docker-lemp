@@ -1,5 +1,4 @@
 # PHP
-
 phpfpm:
   restart: always
   extends:
@@ -20,7 +19,6 @@ nginx:
     - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
     - ./www:/var/www/html
     - ./log/nginx:/var/log/nginx
-
 # MYSQL
 db:
   restart: always
@@ -35,5 +33,4 @@ db:
   volumes:
     - ./mysql/databases:/var/lib/mysql
     - ./log/mysql:/var/log/mysql
-
 #  - /var/run/mysqld/mysqld.sock:/var/run/mysqld/mysqld.sock
