@@ -1,12 +1,12 @@
 # PHP
 phpfpm:
   restart: always
-  build: php-fpm-7
+  image: teampat/php-fpm
   links:
     - db:db
   volumes:
-    - ./php-fpm-7/php-fpm.conf:/usr/local/etc/php-fpm.conf
-    - ./php-fpm-7/php.ini:/usr/local/etc/php/php.ini
+    - ./php-fpm/php-fpm.conf:/usr/local/etc/php-fpm.conf
+    - ./php-fpm/php.ini:/usr/local/etc/php/php.ini
     - ./log/php-fpm:/var/log/php-fpm
   volumes_from:
     - www
