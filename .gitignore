@@ -1,4 +1,5 @@
 www/
 log/
 mysql/
+cache/
 .DS_Store
