@@ -1,38 +1,36 @@
-# PHP
-phpfpm:
-  restart: always
-  image: teampat/php-fpm
-  links:
-    - db:db
-  volumes:
-    - ./config/php-fpm/php-fpm.conf:/usr/local/etc/php-fpm.conf
-    - ./config/php-fpm/php.ini:/usr/local/etc/php/php.ini
-    - ./log/php-fpm:/var/log/php-fpm
-    - ./cache/nginx:/var/cache/nginx
-    - ./www:/var/www/html
-# NGINX
-nginx:
-  restart: always
-  image: nginx:stable-alpine
-  ports:
-    - "8000:80"
-  links:
-    - phpfpm:phpfpm
-  volumes:
-    - ./config/nginx/vhost.conf:/etc/nginx/conf.d/default.conf
-    - ./log/nginx:/var/log/nginx
-    - ./www:/var/www/html
-# MYSQL
-db:
-  restart: always
-  image: mariadb:10.1
-  ports:
-    - "3306:3306"
-  environment:
-    MYSQL_ROOT_PASSWORD: 123456
-    MYSQL_USER: user
-    MYSQL_PASSWORD: password
-    MYSQL_DATABASE: database
-  volumes:
-    - ./mysql/databases:/var/lib/mysql
-    - ./log/mysql:/var/log/mysql
+version: '2'
+services:
+  phpfpm:
+    restart: always
+    image: teampat/php-fpm
+    links:
+      - db:db
+    volumes:
+      - ./config/php-fpm/php-fpm.conf:/usr/local/etc/php-fpm.conf
+      - ./config/php-fpm/php.ini:/usr/local/etc/php/php.ini
+      - ./log/php-fpm:/var/log/php-fpm
+      - ./www:/var/www/html
+  nginx:
+    restart: always
+    image: nginx:stable-alpine
+    ports:
+      - "8000:80"
+    links:
+      - phpfpm:phpfpm
+    volumes:
+      - ./config/nginx/vhost.conf:/etc/nginx/conf.d/default.conf
+      - ./log/nginx:/var/log/nginx
+      - ./www:/var/www/html
+  db:
+    restart: always
+    image: mariadb:10.1
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: 123456
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: database
+    volumes:
+      - ./mysql/databases:/var/lib/mysql
+      - ./log/mysql:/var/log/mysql
