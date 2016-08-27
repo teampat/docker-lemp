@@ -12,7 +12,7 @@ nginx:
     - ./www:/usr/share/nginx/html
 phpfpm:
   restart: always
-  image: teampat/php-fpm
+  build: ./php-fpm-7
   links:
     - db:db
   volumes:
