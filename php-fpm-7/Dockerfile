@@ -1,4 +1,4 @@
-FROM php:7.0-fpm-alpine
+FROM php:8.1-fpm-alpine
 
 RUN apk upgrade --update && apk --no-cache add \
     autoconf file g++ gcc binutils isl libatomic libc-dev musl-dev make re2c libstdc++ libgcc libcurl curl-dev binutils-libs mpc1 mpfr3 gmp libgomp coreutils freetype-dev libjpeg-turbo-dev libltdl libmcrypt-dev libpng-dev openssl-dev libxml2-dev expat-dev \
